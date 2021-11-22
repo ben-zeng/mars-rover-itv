@@ -1,13 +1,13 @@
+import Grid.Grid
+import enumeratum._
+
 object RoverMovements {
   import Direction._
-
-  final case class Grid(maxX: Int,
-                        maxY: Int)
 
   final case class Position(xPos: Int, yPos: Int, direction: Direction)
 
   final case class PossibleRotations(rotateAnticlockwise: Direction,
-                               rotateClockwise: Direction)
+                                     rotateClockwise: Direction)
 
   def calcForwardPosition(pos: Position, grid: Grid): Position = {
     pos match {
@@ -26,7 +26,21 @@ object RoverMovements {
   }
 }
 
-object Direction extends Enumeration {
-  type Direction = Value
-  val North, East, South, West = Value
+sealed trait Direction extends EnumEntry
+object Direction extends Enum[Direction] with CirceEnum[Direction] {
+  case object North extends Direction
+  case object East extends Direction
+  case object South extends Direction
+  case object West extends Direction
+
+  val values: IndexedSeq[Direction] = findValues
+}
+
+sealed trait Action extends EnumEntry
+object Action extends Enum[Action] with CirceEnum[Action] {
+  case object RotateAntiClockwise extends Action
+  case object RotateClockwise extends Action
+  case object MoveStraight extends Action
+
+  val values: IndexedSeq[Action] = findValues
 }

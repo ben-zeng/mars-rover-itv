@@ -1,4 +1,5 @@
-import RoverMovements.{Grid, Position, calcForwardPosition, calcRotations}
+import Grid.Grid
+import RoverMovements.{Position, calcForwardPosition, calcRotations}
 
 class MarsRover(grid: Grid, position: Position) {
   def moveForwards: Position = {
@@ -18,6 +19,8 @@ class MarsRover(grid: Grid, position: Position) {
 
     Position(position.xPos, position.yPos, direction)
   }
+
+  def startPosition: Position = position
 }
 
 

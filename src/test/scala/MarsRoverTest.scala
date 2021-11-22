@@ -1,5 +1,6 @@
 import Direction._
-import RoverMovements.{Grid, Position}
+import Grid._
+import RoverMovements.Position
 import org.scalatest.FunSuite
 import org.scalatest.Matchers.{an, convertToAnyShouldWrapper}
 import org.scalatest.prop.TableDrivenPropertyChecks
@@ -13,6 +14,15 @@ class MarsRoverTest extends FunSuite with TableDrivenPropertyChecks {
     val marsRover = new MarsRover(grid, position)
 
     marsRover shouldBe an[MarsRover]
+  }
+
+  test("Return the start position of the Mars Rover") {
+    val grid = Grid(10, 30)
+    val position = Position(1, 1, South)
+
+    val marsRover = new MarsRover(grid, position)
+
+    marsRover.startPosition shouldBe position
   }
 
   test("Mars rover moves correctly given direction") {
