@@ -16,18 +16,26 @@ object AutoPilot {
     val diffX = destination.xPos - startPosition.xPos
     val diffY = destination.yPos - startPosition.yPos
 
-    val rotateX = if (diffX > 0) rotate(startPosition, North) else rotate(startPosition, South)
-
-    val moveX = rotateX.lastOption.fold(Seq.empty[Move])(lastMove =>
-      if (diffX > 0) move(diffX, lastMove.position, North) else move(diffX, lastMove.position, South))
-
-    val rotateY = moveX.lastOption.fold(Seq.empty[Move])(lastMove =>
-      if (diffY > 0) rotate(lastMove.position, East) else rotate(lastMove.position, West))
+    val rotateY = if (diffY > 0) rotate(startPosition, North)
+    else if(diffY == 0) Seq.empty[Move]
+    else rotate(startPosition, South)
 
     val moveY = rotateY.lastOption.fold(Seq.empty[Move])(lastMove =>
-      if (diffY > 0) move(diffY, lastMove.position, East) else move(diffX, lastMove.position, West))
+      if (diffY > 0) move(diffY, lastMove.position, North)
+      else if (diffY == 0) Seq.empty[Move]
+      else move(diffY, lastMove.position, South))
 
-    rotateX ++ moveX ++ rotateY ++ moveY
+    val rotateX = moveY.lastOption.fold(Seq.empty[Move])(lastMove =>
+      if (diffX > 0) rotate(lastMove.position, East)
+      else if(diffX == 0) Seq.empty[Move]
+      else rotate(lastMove.position, West))
+
+    val moveX = rotateX.lastOption.fold(Seq.empty[Move])(lastMove =>
+      if (diffX > 0) move(diffX, lastMove.position, East)
+      else if (diffX == 0) Seq.empty[Move]
+      else move(diffX, lastMove.position, West))
+
+    rotateY ++ moveY ++ rotateX ++ moveX
   }
 
   def move(units: Int, startPosition: Position, direction: Direction): Seq[Move] = {

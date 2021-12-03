@@ -261,4 +261,12 @@ class AutoPilotTest extends FunSuite with TableDrivenPropertyChecks {
               ]
        """
   }
+
+  test("Move in only one dimension") {
+    AutoPilot.navigate(new MarsRover(Grid(5, 5), Position(1, 1, South)), Destination(1, 2)) shouldBe Seq(
+      Move(RotateClockwise, Position(1, 1, West)),
+      Move(RotateClockwise, Position(1, 1, North)),
+      Move(MoveStraight, Position(1, 2, North))
+    )
+  }
 }
